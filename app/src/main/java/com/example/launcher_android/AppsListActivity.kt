@@ -1,5 +1,6 @@
 package com.example.launcher_android
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -55,10 +56,7 @@ class AppsListActivity : Activity() {
         val adapter: ArrayAdapter<AppDetail> = object : ArrayAdapter<AppDetail>(this, R.layout.list_item, apps!!) {
 
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                var view: View? = null
-                if (convertView == null) {
-                    view = layoutInflater.inflate(R.layout.list_item, null)
-                }
+                val view: View? = layoutInflater.inflate(R.layout.list_item, null)
                 val appIcon = view!!.findViewById<View>(R.id.item_app_icon) as ImageView
                 appIcon.setImageDrawable(apps!![position].icon)
                 val appLabel = view.findViewById<View>(R.id.item_app_label) as TextView

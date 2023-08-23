@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+<!--    https://toubi-tobap.tistory.com/12-->
+
+
+    
 <!--    android:theme="@android:style/Theme.Wallpaper.NoTitleBar.Fullscreen"
 Wallpaper 안드로이드의 테마는 배경화면을 그대로 보여준다.
 앱의 UI는 배경화면 위에 떠있는 것 처럼 보인다.
