@@ -5,76 +5,83 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView.OnItemClickListener
-import android.widget.ArrayAdapter
 import android.widget.ImageView
-import android.widget.ListView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 
 
 class AppsListActivity : Activity() {
 
-    private var manager: PackageManager? = null
-    private var apps: MutableList<AppDetail>? = null
-    private var list: ListView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_apps_list)
 
-        loadApps();
-        loadListView();
-        addClickListener();
+        val adapter = CustomAdapter(loadApps())
 
+        findViewById<RecyclerView>(R.id.recyclerview).adapter = adapter
     }
 
-    private fun loadApps() {
-        manager = packageManager
-        apps = ArrayList()
+    @SuppressLint("QueryPermissionsNeeded")
+    private fun loadApps(): ArrayList<AppInfo> {
+        val dataList = ArrayList<AppInfo>()
+        val manager = packageManager
         val i = Intent(Intent.ACTION_MAIN, null)
         i.addCategory(Intent.CATEGORY_LAUNCHER)
         val availableActivities = manager!!.queryIntentActivities(i, 0)
-        manager!!.queryIntentActivities(i, PackageManager.MATCH_DEFAULT_ONLY)
 
         for (ri in availableActivities) {
-            val app = AppDetail(
-                label = ri.loadLabel(manager).toString(),
-                name = ri.activityInfo.packageName,
+            val app = AppInfo(
+                appName = ri.loadLabel(manager).toString(),
+                packageName = ri.activityInfo.packageName,
                 icon = ri.activityInfo.loadIcon(manager)
             )
-            apps!!.add(app)
+            dataList.add(app)
         }
+        return dataList
     }
 
+    inner class CustomAdapter(private val dataList: ArrayList<AppInfo>) :
+        RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
+        inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            var linearlayout: LinearLayout
+            var appName: TextView
+            var packageName: TextView
+            var appIcon: ImageView
 
-    private fun loadListView() {
-        list = findViewById<View>(R.id.apps_list) as ListView
-
-        val adapter: ArrayAdapter<AppDetail> = object : ArrayAdapter<AppDetail>(this, R.layout.list_item, apps!!) {
-
-            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                val view: View? = layoutInflater.inflate(R.layout.list_item, null)
-                val appIcon = view!!.findViewById<View>(R.id.item_app_icon) as ImageView
-                appIcon.setImageDrawable(apps!![position].icon)
-                val appLabel = view.findViewById<View>(R.id.item_app_label) as TextView
-                appLabel.text = apps!![position].label
-                val appName = view.findViewById<View>(R.id.item_app_name) as TextView
-                appName.text = apps!![position].name
-                return view
+            init {
+                linearlayout = view.findViewById(R.id.linearlayout)
+                appName = view.findViewById(R.id.app_name)
+                packageName = view.findViewById(R.id.package_name)
+                appIcon = view.findViewById(R.id.app_icon)
             }
         }
 
-        list!!.adapter = adapter
+        override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
+            val view = LayoutInflater.from(viewGroup.context)
+                .inflate(R.layout.list_item, viewGroup, false)
+            return ViewHolder(view)
+        }
+
+        override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+            viewHolder.apply {
+                appName.text = dataList[position].appName
+                packageName.text = dataList[position].packageName
+                appIcon.setImageDrawable(dataList[position].icon)
+                linearlayout.setOnClickListener {
+                    val i = packageManager!!.getLaunchIntentForPackage(dataList[position].packageName)
+                    startActivity(i)
+                }
+            }
+        }
+
+        override fun getItemCount() = dataList.size
     }
 
-    private fun addClickListener() {
-        list!!.onItemClickListener = OnItemClickListener { _, _, pos, _ ->
-            val i = manager!!.getLaunchIntentForPackage(apps!![pos].name)
-            this@AppsListActivity.startActivity(i)
-        }
-    }
-    
 }

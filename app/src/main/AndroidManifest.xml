@@ -2,17 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-<!--    https://toubi-tobap.tistory.com/12-->
-
-
-    
-<!--    android:theme="@android:style/Theme.Wallpaper.NoTitleBar.Fullscreen"
-Wallpaper 안드로이드의 테마는 배경화면을 그대로 보여준다.
-앱의 UI는 배경화면 위에 떠있는 것 처럼 보인다.
-그런데 You need to use a Theme.AppCompat theme (or descendant) with this activity. 에러가 발생할 것이다.
-사용하는 Activity들이 AppCompatActivity를 상속받았기 때문이다.
-AppCompatActivity를 Activity로 변경해주자.
--->
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -21,7 +10,7 @@ AppCompatActivity를 Activity로 변경해주자.
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@android:style/Theme.Wallpaper.NoTitleBar.Fullscreen"
+        android:theme="@style/Theme.Launcher"
         tools:targetApi="31">
         <!--
         android:launchMode="singleTask" 시스템이 한 개의 인스턴스만 생성한다.
@@ -38,7 +27,7 @@ AppCompatActivity를 Activity로 변경해주자.
 
                 <!-- 홈 버튼을 눌렀을 때 홈 앱처럼 됨 -->
                 <category android:name="android.intent.category.HOME" />
-                <category android:name="android.intent.category.DEFAULT" />
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
             </intent-filter>
 
             <meta-data

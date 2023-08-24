@@ -1,19 +1,15 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.Launcher_android" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
-    </style>
-    <style name="Theme.Launcher"  parent="Theme.AppCompat">
-
+<resources>
+    <style name="Theme.Launcher" parent="Theme.AppCompat">
+        <!--배경색 투명으로 변경-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <!--시스템의 배경화면을 보여줄지 말지 설정 -->
+        <item name="android:windowShowWallpaper">true</item>
+        <!--상태바 컬러 변경-->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!--하단 네비게이션바 컬러 변경-->
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <!--윈도우에서 보여지는 컨텐츠의 Overlay(그림자) 제거-->
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 </resources>
