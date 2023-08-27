@@ -27,7 +27,8 @@
 
                 <!-- 홈 버튼을 눌렀을 때 홈 앱처럼 됨 -->
                 <category android:name="android.intent.category.HOME" />
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
+                <category android:name="android.intent.category.DEFAULT" />
+                <!---->
             </intent-filter>
 
             <meta-data
@@ -38,8 +39,7 @@
         <!--설치된 앱의 목록을 보여주기 위한 화면-->
         <activity
             android:name=".AppsListActivity"
-            android:exported="false"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:exported="false" />
 
     </application>
 
