@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Launcher"
         tools:targetApi="31">
+        <activity
+            android:name=".EmptyActivity"
+            android:exported="false">
+
+<!--            <action android:name="android.intent.action.MAIN" />-->
+
+<!--            <category android:name="android.intent.category.HOME" />-->
+<!--            <category android:name="android.intent.category.DEFAULT" />-->
+        </activity>
         <!--
         android:launchMode="singleTask" 시스템이 한 개의 인스턴스만 생성한다.
         싱글톤과 같다고 보면 된다.
@@ -28,15 +39,13 @@
                 <!-- 홈 버튼을 눌렀을 때 홈 앱처럼 됨 -->
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <!---->
+                <!--  -->
             </intent-filter>
 
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity>
-
-        <!--설치된 앱의 목록을 보여주기 위한 화면-->
+        </activity> <!-- 설치된 앱의 목록을 보여주기 위한 화면 -->
         <activity
             android:name=".AppsListActivity"
             android:exported="false" />

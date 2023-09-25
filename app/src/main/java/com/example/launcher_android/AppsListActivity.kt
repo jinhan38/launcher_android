@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,22 +27,28 @@ class AppsListActivity : Activity() {
         findViewById<RecyclerView>(R.id.recyclerview).adapter = adapter
     }
 
-    @SuppressLint("QueryPermissionsNeeded")
+    @SuppressLint("QueryPermissionsNeeded", "InlinedApi")
     private fun loadApps(): ArrayList<AppInfo> {
         val dataList = ArrayList<AppInfo>()
         val manager = packageManager
-        val i = Intent(Intent.ACTION_MAIN, null)
-        i.addCategory(Intent.CATEGORY_LAUNCHER)
-        val apps = manager!!.queryIntentActivities(i, 0)
+
+        val pm = packageManager
+        val apps = pm.getInstalledApplications(PackageManager.GET_GIDS)
 
         for (app in apps) {
-            dataList.add(
-                AppInfo(
-                    appName = app.loadLabel(manager).toString(),
-                    packageName = app.activityInfo.packageName,
-                    icon = app.activityInfo.loadIcon(manager)
-                )
-            )
+            if (pm.getLaunchIntentForPackage(app.packageName) != null) {
+                if (app.flags and ApplicationInfo.FLAG_SYSTEM == 1) {
+                    // system apps
+                } else {
+                    dataList.add(
+                        AppInfo(
+                            appName = app.loadLabel(manager).toString(),
+                            packageName = app.packageName,
+                            icon = app.loadIcon(manager)
+                        )
+                    )
+                }
+            }
         }
         return dataList
     }
@@ -68,7 +77,8 @@ class CustomAdapter(private val dataList: ArrayList<AppInfo>, private val contex
             appIcon.setImageDrawable(dataList[position].icon)
 
             linearlayout.setOnClickListener {
-                val i = context.packageManager!!.getLaunchIntentForPackage(dataList[position].packageName)
+                val i =
+                    context.packageManager!!.getLaunchIntentForPackage(dataList[position].packageName)
                 context.startActivity(i)
             }
         }
